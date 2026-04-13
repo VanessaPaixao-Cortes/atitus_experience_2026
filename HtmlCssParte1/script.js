@@ -1,8 +1,8 @@
 const CODIGOS_CORRETOS = {
-    codigo1: "A17X",
-    codigo2: "B09K",
-    codigo3: "C44P",
-    codigo4: "D31Z"
+    codigo1: "1",
+    codigo2: "2",
+    codigo3: "3",
+    codigo4: "4"
 };
 
 const campos = ["codigo1", "codigo2", "codigo3", "codigo4"];
