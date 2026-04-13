@@ -1,131 +1,65 @@
-const CODIGOS_CORRETOS = {
-    codigo1: 'A17X',
-    codigo2: 'B09K',
-    codigo3: 'C44P',
-    codigo4: 'D31Z'
-};
+const CODIGOS = ['A17X', 'B09K', 'C44P', 'D31Z'];
+let typingTimer = null;
 
-const campos = ['codigo1', 'codigo2', 'codigo3', 'codigo4'];
+function typeStatus(texto) {
+    clearInterval(typingTimer);
 
-const statusBox = document.getElementById('statusBox');
-const statusMessage = document.getElementById('statusMessage');
-const videoWrapper = document.getElementById('videoWrapper');
-const videoFinal = document.getElementById('videoFinal');
-const successOverlay = document.getElementById('successOverlay');
-const somValidacao = document.getElementById('somValidacao');
+    let i = 0;
+    const el = document.getElementById("statusMessage");
+    el.innerText = "";
 
-function normalizar(valor) {
-    return valor.trim().toUpperCase();
-}
-
-function setStatus(tipo, mensagem) {
-    statusBox.classList.remove('pending', 'success', 'error');
-    statusBox.classList.add(tipo);
-    statusMessage.textContent = mensagem;
-}
-
-async function tocarSomValidacao() {
-    try {
-        somValidacao.currentTime = 0;
-        await somValidacao.play();
-    } catch (erro) {
-        console.warn('Não foi possível tocar o som automaticamente.', erro);
-    }
-}
-
-async function tocarVideoFinal() {
-    try {
-        videoFinal.currentTime = 0;
-        await videoFinal.play();
-    } catch (erro) {
-        console.warn('Não foi possível tocar o vídeo automaticamente.', erro);
-    }
-}
-
-function esconderOverlay() {
-    successOverlay.classList.remove('visible');
-    successOverlay.setAttribute('aria-hidden', 'true');
-}
-
-function mostrarOverlayTemporario() {
-    successOverlay.classList.add('visible');
-    successOverlay.setAttribute('aria-hidden', 'false');
-
-    window.setTimeout(() => {
-        esconderOverlay();
-        tocarVideoFinal();
-    }, 2200);
+    typingTimer = setInterval(() => {
+        el.innerText += texto[i];
+        i++;
+        if (i >= texto.length) {
+            clearInterval(typingTimer);
+        }
+    }, 30);
 }
 
 function validarCodigos() {
-    const preenchidos = {};
-    let todosPreenchidos = true;
+    const valores = [
+        codigo1.value.toUpperCase(),
+        codigo2.value.toUpperCase(),
+        codigo3.value.toUpperCase(),
+        codigo4.value.toUpperCase()
+    ];
 
-    for (const id of campos) {
-        const valor = normalizar(document.getElementById(id).value);
-        preenchidos[id] = valor;
-        if (!valor) todosPreenchidos = false;
-    }
-
-    if (!todosPreenchidos) {
-        setStatus('pending', 'Preencha os quatro códigos para validar o sistema.');
-        videoWrapper.classList.remove('visible');
-        esconderOverlay();
-
-        if (!videoFinal.paused) {
-            videoFinal.pause();
-            videoFinal.currentTime = 0;
-        }
-
+    if (valores.includes("")) {
+        typeStatus("Preencha todos os códigos");
         return;
     }
 
-    const tudoCorreto = campos.every((id) => preenchidos[id] === CODIGOS_CORRETOS[id]);
+    typeStatus("Validando sistema...");
 
-    if (tudoCorreto) {
-        setStatus('success', 'Códigos validados com sucesso. Núcleo central reativado.');
-        videoWrapper.classList.add('visible');
-        tocarSomValidacao();
-        mostrarOverlayTemporario();
-    } else {
-        setStatus('error', 'Combinação inválida. Verifique os códigos e tente novamente.');
-        videoWrapper.classList.remove('visible');
-        esconderOverlay();
+    setTimeout(() => {
+        if (JSON.stringify(valores) === JSON.stringify(CODIGOS)) {
 
-        if (!videoFinal.paused) {
-            videoFinal.pause();
-            videoFinal.currentTime = 0;
+            typeStatus("Acesso concedido");
+            somValidacao.play();
+
+            setTimeout(() => {
+                somAcesso.play();
+                overlay.classList.add("visible");
+
+                setTimeout(() => {
+                    overlay.classList.remove("visible");
+                    videoWrapper.classList.add("visible");
+                    videoFinal.play();
+                }, 2000);
+
+            }, 800);
+
+        } else {
+            typeStatus("Código inválido");
         }
-    }
+    }, 800);
 }
 
 function limparCampos() {
-    for (const id of campos) {
-        document.getElementById(id).value = '';
-    }
-
-    setStatus('pending', 'Aguardando inserção dos quatro códigos.');
-    videoWrapper.classList.remove('visible');
-    esconderOverlay();
-
-    if (!videoFinal.paused) {
-        videoFinal.pause();
-        videoFinal.currentTime = 0;
-    }
-
-    if (!somValidacao.paused) {
-        somValidacao.pause();
-        somValidacao.currentTime = 0;
-    }
-}
-
-document.getElementById('validarBtn').addEventListener('click', validarCodigos);
-document.getElementById('limparBtn').addEventListener('click', limparCampos);
-
-for (const id of campos) {
-    document.getElementById(id).addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            validarCodigos();
-        }
-    });
+    codigo1.value = "";
+    codigo2.value = "";
+    codigo3.value = "";
+    codigo4.value = "";
+    typeStatus("Aguardando códigos...");
 }
