@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protocolo Phoenix — Validação de Códigos</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main class="app">
+        <section class="header">
+            <span class="eyebrow">Protocolo Phoenix — Cidade 0</span>
+            <h1>Validação do núcleo central</h1>
+            <p class="subtitle">
+                Insira os quatro códigos recuperados pelas equipes. Se a combinação estiver correta,
+                o sistema central será reativado e o vídeo final poderá ser exibido.
+            </p>
+        </section>
+
+        <section class="content">
+            <section class="panel">
+                <h2>Inserção dos códigos</h2>
+                <p>Preencha os quatro campos abaixo com os códigos obtidos nas estações da missão.</p>
+
+                <div class="grid">
+                    <div>
+                        <label for="codigo1">Código 1</label>
+                        <input id="codigo1" type="text" maxlength="20" placeholder="Ex.: A17X" />
+                    </div>
+                    <div>
+                        <label for="codigo2">Código 2</label>
+                        <input id="codigo2" type="text" maxlength="20" placeholder="Ex.: B09K" />
+                    </div>
+                    <div>
+                        <label for="codigo3">Código 3</label>
+                        <input id="codigo3" type="text" maxlength="20" placeholder="Ex.: C44P" />
+                    </div>
+                    <div>
+                        <label for="codigo4">Código 4</label>
+                        <input id="codigo4" type="text" maxlength="20" placeholder="Ex.: D31Z" />
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="primary" id="validarBtn">Validar códigos</button>
+                    <button class="secondary" id="limparBtn">Limpar</button>
+                </div>
+
+                <p class="hint">
+                    Ajuste os códigos corretos no arquivo <strong>script.js</strong>. Deixe o vídeo final
+                    e o som de validação na mesma pasta deste projeto.
+                </p>
+            </section>
+
+            <section class="panel status">
+                <div id="statusBox" class="status-box pending">
+                    <div class="status-title">Status do sistema</div>
+                    <div id="statusMessage" class="status-message">
+                        Aguardando inserção dos quatro códigos.
+                    </div>
+                </div>
+
+                <div id="videoWrapper" class="video-wrapper">
+                    <video id="videoFinal" controls preload="metadata">
+                        <source src="video-final.mp4" type="video/mp4" />
+                        Seu navegador não suporta vídeo em HTML5.
+                    </video>
+                </div>
+            </section>
+        </section>
+
+        <div class="footer-note">
+            Dica: deixe os arquivos <strong>video-final.mp4</strong> e <strong>som-validacao.mp3</strong>
+            na mesma pasta do projeto.
+        </div>
+
+        <div id="successOverlay" class="overlay" aria-hidden="true">
+            <div class="overlay-card">
+                <div class="access-label">Sistema central</div>
+                <div class="access-title">Acesso liberado</div>
+                <p class="access-text">
+                    Códigos confirmados. Núcleo de estabilização reativado.
+                    Preparando protocolo final de recuperação da Cidade 0.
+                </p>
+                <div class="access-bar">
+                    <div class="access-fill"></div>
+                </div>
+                <div class="access-sub">Validando integridade dos sistemas</div>
+            </div>
+        </div>
+
+        <audio id="somValidacao" preload="auto">
+            <source src="som-validacao.mp3" type="audio/mpeg" />
+        </audio>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
