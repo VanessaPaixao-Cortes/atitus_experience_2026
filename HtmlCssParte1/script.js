@@ -1,11 +1,11 @@
 const CODIGOS_CORRETOS = {
-    codigo1: "1",
-    codigo2: "2",
-    codigo3: "3",
-    codigo4: "4"
+    codigo1: "CURA",
+    codigo2: "JURI",
+    codigo3: "CODE",
+    // codigo4: "4"
 };
 
-const campos = ["codigo1", "codigo2", "codigo3", "codigo4"];
+const campos = ["codigo1", "codigo2", "codigo3"];
 
 const statusBox = document.getElementById("statusBox");
 const statusMessage = document.getElementById("statusMessage");
